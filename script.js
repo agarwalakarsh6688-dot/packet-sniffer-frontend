@@ -1,6 +1,6 @@
-/* =============================
-   CLEAN CYBER TOPOLOGY BACKGROUND
-============================= */
+/* =========================================
+   LIVE TCP PACKET SNIFFER - FINAL JS
+========================================= */
 
 const canvas = document.getElementById("networkCanvas");
 const ctx = canvas.getContext("2d");
@@ -8,15 +8,17 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let particles = [];
-const particleCount = 45;
+/* =========================================
+   CINEMATIC NETWORK BACKGROUND
+========================================= */
 
-class Particle {
-    constructor() {
+class Node {
+    constructor(depth = 1) {
+        this.depth = depth;
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 0.2;
-        this.vy = (Math.random() - 0.5) * 0.2;
+        this.vx = (Math.random() - 0.5) * 0.15 * depth;
+        this.vy = (Math.random() - 0.5) * 0.15 * depth;
     }
 
     move() {
@@ -29,58 +31,87 @@ class Particle {
 
     draw() {
         ctx.beginPath();
-        ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
-        ctx.fillStyle = "#00f2ff";
+        ctx.arc(this.x, this.y, 2 * this.depth, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(0,255,255,0.8)";
         ctx.fill();
     }
 }
 
-for (let i = 0; i < particleCount; i++) {
-    particles.push(new Particle());
+const nodes = [];
+const NODE_COUNT = 40;
+
+// Depth layering for cinematic feel
+for (let i = 0; i < NODE_COUNT; i++) {
+    let depth = Math.random() > 0.5 ? 1 : 0.6;
+    nodes.push(new Node(depth));
 }
 
-function connectParticles() {
-    for (let a = 0; a < particles.length; a++) {
-        for (let b = a + 1; b < particles.length; b++) {
-            let dx = particles[a].x - particles[b].x;
-            let dy = particles[a].y - particles[b].y;
-            let distance = Math.sqrt(dx * dx + dy * dy);
+function connectNodes() {
+    for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+            let dx = nodes[i].x - nodes[j].x;
+            let dy = nodes[i].y - nodes[j].y;
+            let dist = Math.sqrt(dx * dx + dy * dy);
 
-            if (distance < 180) {
-                ctx.strokeStyle = "rgba(0,255,255," + (0.4 - distance / 450) + ")";
+            if (dist < 170) {
+                ctx.strokeStyle = `rgba(0,255,255,${0.3 - dist / 600})`;
                 ctx.lineWidth = 1;
                 ctx.beginPath();
-                ctx.moveTo(particles[a].x, particles[a].y);
-                ctx.lineTo(particles[b].x, particles[b].y);
+                ctx.moveTo(nodes[i].x, nodes[i].y);
+                ctx.lineTo(nodes[j].x, nodes[j].y);
                 ctx.stroke();
             }
         }
     }
 }
 
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+function drawEnergyCore() {
+    let pulse = (Math.sin(Date.now() * 0.002) + 1) / 2;
 
-    // subtle red edge tension
-    let gradient = ctx.createLinearGradient(
-        canvas.width * 0.75,
-        0,
-        canvas.width,
-        0
+    let gradient = ctx.createRadialGradient(
+        canvas.width / 2,
+        canvas.height / 2,
+        50,
+        canvas.width / 2,
+        canvas.height / 2,
+        450
     );
 
-    gradient.addColorStop(0, "rgba(255,0,80,0)");
-    gradient.addColorStop(1, "rgba(255,0,80,0.15)");
+    gradient.addColorStop(0, `rgba(255,0,60,${0.07 + pulse * 0.05})`);
+    gradient.addColorStop(1, "rgba(0,0,0,0)");
 
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
 
-    for (let p of particles) {
-        p.move();
-        p.draw();
-    }
+let scanY = 0;
 
-    connectParticles();
+function drawScanLine() {
+    scanY += 0.6;
+    if (scanY > canvas.height) scanY = 0;
+
+    let gradient = ctx.createLinearGradient(0, scanY - 40, 0, scanY + 40);
+    gradient.addColorStop(0, "rgba(0,255,255,0)");
+    gradient.addColorStop(0.5, "rgba(0,255,255,0.1)");
+    gradient.addColorStop(1, "rgba(0,255,255,0)");
+
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, scanY - 40, canvas.width, 80);
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    drawEnergyCore();
+
+    nodes.forEach(node => {
+        node.move();
+        node.draw();
+    });
+
+    connectNodes();
+    drawScanLine();
+
     requestAnimationFrame(animate);
 }
 
@@ -91,9 +122,9 @@ window.addEventListener("resize", () => {
     canvas.height = window.innerHeight;
 });
 
-/* =============================
-   PACKET MONITOR LOGIC
-============================= */
+/* =========================================
+   PACKET SYSTEM LOGIC
+========================================= */
 
 const backendURL = "https://packet-sniffer-backend.onrender.com/packets";
 
@@ -106,24 +137,24 @@ const stopBtn = document.getElementById("stopBtn");
 const clearBtn = document.getElementById("clearBtn");
 const cleanWebsite = document.getElementById("cleanWebsite");
 const apiStatus = document.getElementById("apiStatus");
+const packetTable = document.getElementById("packetTable");
 
 function checkAPI() {
     fetch(backendURL)
         .then(res => {
             if (res.ok) {
-                apiStatus.textContent = "● API Online";
+                apiStatus.textContent = "● API ONLINE";
                 apiStatus.style.color = "#00ff88";
             }
         })
         .catch(() => {
-            apiStatus.textContent = "● API Offline";
+            apiStatus.textContent = "● API OFFLINE";
             apiStatus.style.color = "#ff4c4c";
         });
 }
 
-function addRow(data) {
-    const table = document.getElementById("packetTable");
-    const row = table.insertRow(0);
+function addPacketRow(data) {
+    const row = packetTable.insertRow(0);
     const time = new Date().toLocaleTimeString();
 
     row.insertCell(0).innerText = data.src_ip;
@@ -132,8 +163,8 @@ function addRow(data) {
     row.insertCell(3).innerText = data.dst_port;
     row.insertCell(4).innerText = time;
 
-    if (table.rows.length > 50) {
-        table.deleteRow(50);
+    if (packetTable.rows.length > 60) {
+        packetTable.deleteRow(60);
     }
 }
 
@@ -146,20 +177,22 @@ startMonitoring.onclick = () => {
     interval = setInterval(() => {
         fetch(backendURL)
             .then(res => res.json())
-            .then(data => addRow(data))
+            .then(data => addPacketRow(data))
             .catch(() => {});
     }, 1000);
 };
 
-stopBtn.onclick = () => clearInterval(interval);
+stopBtn.onclick = () => {
+    clearInterval(interval);
+};
 
 clearBtn.onclick = () => {
-    document.getElementById("packetTable").innerHTML = "";
+    packetTable.innerHTML = "";
 };
 
 cleanWebsite.onclick = () => {
     clearInterval(interval);
-    document.getElementById("packetTable").innerHTML = "";
+    packetTable.innerHTML = "";
     dashboard.classList.add("hidden");
     landing.classList.remove("hidden");
 };
