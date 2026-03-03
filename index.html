@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Live TCP Packet Sniffer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Live TCP Packet Sniffer</h1>
+
+<div class="controls">
+    <button id="startBtn">START</button>
+    <button id="stopBtn">STOP</button>
+    <button id="clearBtn">CLEAR TABLE</button>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Source IP</th>
+            <th>Source Port</th>
+            <th>Destination IP</th>
+            <th>Destination Port</th>
+        </tr>
+    </thead>
+    <tbody id="packetTable">
+    </tbody>
+</table>
+
+<script src="script.js"></script>
+</body>
+</html>
