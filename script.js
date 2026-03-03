@@ -1,3 +1,87 @@
+/* =============================
+   NETWORK BACKGROUND
+============================= */
+
+const canvas = document.getElementById("networkCanvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+const particleCount = 90;
+
+class Particle {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.7;
+        this.vy = (Math.random() - 0.5) * 0.7;
+        this.size = 2;
+    }
+
+    move() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+    }
+
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = "#00f2ff";
+        ctx.fill();
+    }
+}
+
+for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle());
+}
+
+function connectParticles() {
+    for (let a = 0; a < particles.length; a++) {
+        for (let b = a; b < particles.length; b++) {
+            let dx = particles[a].x - particles[b].x;
+            let dy = particles[a].y - particles[b].y;
+            let distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < 130) {
+                ctx.strokeStyle = "rgba(0,255,255," + (1 - distance / 130) + ")";
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(particles[a].x, particles[a].y);
+                ctx.lineTo(particles[b].x, particles[b].y);
+                ctx.stroke();
+            }
+        }
+    }
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let p of particles) {
+        p.move();
+        p.draw();
+    }
+
+    connectParticles();
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
+/* =============================
+   PACKET MONITOR LOGIC
+============================= */
+
 const backendURL = "https://packet-sniffer-backend.onrender.com/packets";
 
 let interval = null;
@@ -27,7 +111,6 @@ function checkAPI() {
 function addRow(data) {
     const table = document.getElementById("packetTable");
     const row = table.insertRow(0);
-
     const time = new Date().toLocaleTimeString();
 
     row.insertCell(0).innerText = data.src_ip;
@@ -51,13 +134,11 @@ startMonitoring.onclick = () => {
         fetch(backendURL)
             .then(res => res.json())
             .then(data => addRow(data))
-            .catch(err => console.error(err));
+            .catch(() => {});
     }, 1000);
 };
 
-stopBtn.onclick = () => {
-    clearInterval(interval);
-};
+stopBtn.onclick = () => clearInterval(interval);
 
 clearBtn.onclick = () => {
     document.getElementById("packetTable").innerHTML = "";
