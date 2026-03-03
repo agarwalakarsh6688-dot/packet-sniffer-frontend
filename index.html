@@ -4,19 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Live TCP Packet Sniffer</title>
+
+<!-- Premium Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="main-content">
 
-    <!-- LANDING PAGE -->
-    <section id="landing" class="page active">
+    <!-- LANDING -->
+    <section id="landing" class="page">
         <h1>Live TCP Packet Sniffer</h1>
         <p class="subtitle">
             Simulated TCP packets can be fetched in real time through a secure API.
         </p>
-        <button id="startMonitoring" class="primary-btn">
+        <button id="startMonitoring" class="btn-primary">
             START MONITORING
         </button>
     </section>
@@ -26,26 +30,28 @@
 
         <div class="top-bar">
             <span id="apiStatus" class="status">● Checking API...</span>
-            <button id="cleanWebsite" class="secondary-btn">Clean Website</button>
+            <button id="cleanWebsite" class="btn-secondary">Clean Website</button>
         </div>
 
         <div class="controls">
-            <button id="stopBtn" class="danger-btn">STOP</button>
-            <button id="clearBtn" class="secondary-btn">CLEAR TABLE</button>
+            <button id="stopBtn" class="btn-danger">STOP</button>
+            <button id="clearBtn" class="btn-secondary">CLEAR TABLE</button>
         </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Source IP</th>
-                    <th>Source Port</th>
-                    <th>Destination IP</th>
-                    <th>Destination Port</th>
-                    <th>Timestamp</th>
-                </tr>
-            </thead>
-            <tbody id="packetTable"></tbody>
-        </table>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Source IP</th>
+                        <th>Source Port</th>
+                        <th>Destination IP</th>
+                        <th>Destination Port</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody id="packetTable"></tbody>
+            </table>
+        </div>
 
     </section>
 

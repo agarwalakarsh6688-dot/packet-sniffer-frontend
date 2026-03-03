@@ -20,7 +20,7 @@ function checkAPI() {
         })
         .catch(() => {
             apiStatus.textContent = "● API Offline";
-            apiStatus.style.color = "red";
+            apiStatus.style.color = "#ff4c4c";
         });
 }
 
