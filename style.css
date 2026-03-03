@@ -1,39 +1,58 @@
+/* Layout Structure */
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    background: #0d1117;
+    background:
+        radial-gradient(circle at 20% 30%, #00e5ff22, transparent 40%),
+        radial-gradient(circle at 80% 70%, #00e5ff11, transparent 40%),
+        linear-gradient(135deg, #0d1117, #0a1a22);
     color: #00e5ff;
+
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     overflow-x: hidden;
 }
 
-#background-animation {
+/* Animated Grid Background */
+body::before {
+    content: "";
     position: fixed;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 30%, #00e5ff15, transparent),
-                radial-gradient(circle at 80% 70%, #00e5ff10, transparent);
-    animation: pulse 6s infinite alternate;
+    width: 200%;
+    height: 200%;
+    background-image:
+        linear-gradient(#00e5ff10 1px, transparent 1px),
+        linear-gradient(90deg, #00e5ff10 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: moveGrid 20s linear infinite;
     z-index: -1;
 }
 
-@keyframes pulse {
-    from { opacity: 0.6; }
-    to { opacity: 1; }
+@keyframes moveGrid {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-40px, -40px); }
 }
 
+.main-content {
+    flex: 1;
+}
+
+/* Pages */
 .page {
     text-align: center;
-    padding: 60px 20px;
-    transition: opacity 0.6s ease;
+    padding: 80px 20px;
+    transition: opacity 0.5s ease;
 }
 
 .hidden {
     display: none;
 }
 
+/* Typography */
 h1 {
     font-size: 3rem;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    text-shadow: 0 0 20px #00e5ff88;
 }
 
 .subtitle {
@@ -41,7 +60,10 @@ h1 {
     margin-bottom: 30px;
 }
 
-.primary-btn, .secondary-btn, .danger-btn {
+/* Buttons */
+.primary-btn,
+.secondary-btn,
+.danger-btn {
     padding: 12px 25px;
     margin: 10px;
     border: 2px solid #00e5ff;
@@ -70,20 +92,24 @@ h1 {
     color: white;
 }
 
+/* Top Bar */
 .top-bar {
     display: flex;
     justify-content: space-between;
     padding: 0 10%;
+    align-items: center;
 }
 
 .status {
     font-weight: bold;
 }
 
+/* Table */
 table {
     width: 90%;
     margin: 30px auto;
     border-collapse: collapse;
+    backdrop-filter: blur(6px);
 }
 
 th, td {
@@ -95,9 +121,9 @@ th {
     background: #111827;
 }
 
+/* Footer */
 footer {
     text-align: center;
     padding: 20px;
     border-top: 1px solid #00e5ff30;
-    margin-top: 40px;
 }

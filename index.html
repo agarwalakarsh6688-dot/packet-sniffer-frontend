@@ -8,44 +8,48 @@
 </head>
 <body>
 
-<div id="background-animation"></div>
+<div class="main-content">
 
-<!-- LANDING PAGE -->
-<section id="landing" class="page active">
-    <h1>Live TCP Packet Sniffer</h1>
-    <p class="subtitle">
-        Simulated TCP packets can be fetched in real time through a secure API.
-    </p>
-    <button id="startMonitoring" class="primary-btn">
-        START MONITORING
-    </button>
-</section>
+    <!-- LANDING PAGE -->
+    <section id="landing" class="page active">
+        <h1>Live TCP Packet Sniffer</h1>
+        <p class="subtitle">
+            Simulated TCP packets can be fetched in real time through a secure API.
+        </p>
+        <button id="startMonitoring" class="primary-btn">
+            START MONITORING
+        </button>
+    </section>
 
-<!-- DASHBOARD -->
-<section id="dashboard" class="page hidden">
-    <div class="top-bar">
-        <span id="apiStatus" class="status">● API Checking...</span>
-        <button id="cleanWebsite" class="secondary-btn">Clean Website</button>
-    </div>
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="page hidden">
 
-    <div class="controls">
-        <button id="stopBtn" class="danger-btn">STOP</button>
-        <button id="clearBtn" class="secondary-btn">CLEAR TABLE</button>
-    </div>
+        <div class="top-bar">
+            <span id="apiStatus" class="status">● Checking API...</span>
+            <button id="cleanWebsite" class="secondary-btn">Clean Website</button>
+        </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Source IP</th>
-                <th>Source Port</th>
-                <th>Destination IP</th>
-                <th>Destination Port</th>
-                <th>Timestamp</th>
-            </tr>
-        </thead>
-        <tbody id="packetTable"></tbody>
-    </table>
-</section>
+        <div class="controls">
+            <button id="stopBtn" class="danger-btn">STOP</button>
+            <button id="clearBtn" class="secondary-btn">CLEAR TABLE</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Source IP</th>
+                    <th>Source Port</th>
+                    <th>Destination IP</th>
+                    <th>Destination Port</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody id="packetTable"></tbody>
+        </table>
+
+    </section>
+
+</div>
 
 <footer>
     © 2026 Akarsh Agarwal
