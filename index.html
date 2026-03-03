@@ -1,32 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Live TCP Packet Sniffer</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live TCP Packet Sniffer</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>Live TCP Packet Sniffer</h1>
+<div id="background-animation"></div>
 
-<div class="controls">
-    <button id="startBtn">START</button>
-    <button id="stopBtn">STOP</button>
-    <button id="clearBtn">CLEAR TABLE</button>
-</div>
+<!-- LANDING PAGE -->
+<section id="landing" class="page active">
+    <h1>Live TCP Packet Sniffer</h1>
+    <p class="subtitle">
+        Simulated TCP packets can be fetched in real time through a secure API.
+    </p>
+    <button id="startMonitoring" class="primary-btn">
+        START MONITORING
+    </button>
+</section>
 
-<table>
-    <thead>
-        <tr>
-            <th>Source IP</th>
-            <th>Source Port</th>
-            <th>Destination IP</th>
-            <th>Destination Port</th>
-        </tr>
-    </thead>
-    <tbody id="packetTable">
-    </tbody>
-</table>
+<!-- DASHBOARD -->
+<section id="dashboard" class="page hidden">
+    <div class="top-bar">
+        <span id="apiStatus" class="status">● API Checking...</span>
+        <button id="cleanWebsite" class="secondary-btn">Clean Website</button>
+    </div>
+
+    <div class="controls">
+        <button id="stopBtn" class="danger-btn">STOP</button>
+        <button id="clearBtn" class="secondary-btn">CLEAR TABLE</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Source IP</th>
+                <th>Source Port</th>
+                <th>Destination IP</th>
+                <th>Destination Port</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody id="packetTable"></tbody>
+    </table>
+</section>
+
+<footer>
+    © 2026 Akarsh Agarwal
+</footer>
 
 <script src="script.js"></script>
 </body>
